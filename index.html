@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Baby | Software Engineering Student & Full-Stack Developer</title>
+
+<!-- Bootstrap 5 -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- Custom stylesheet -->
+<link rel="stylesheet" href="styles.css" />
+
+<!-- React + ReactDOM -->
+<script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+<!-- Babel -->
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState } = React;
+
+function Navbar(){
+  const [open, setOpen] = useState(false);
+  const links = ["Home","Skills","Experience","Projects","Contact"];
+  return (
+    <nav className="navbar navbar-expand-lg navbar-custom fixed-top py-3">
+      <div className="container">
+        <a className="navbar-brand" href="#home">Baby<span className="dot">.</span></a>
+        <button className="navbar-toggler" type="button" onClick={() => setOpen(!open)} aria-label="Toggle navigation">
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className={"collapse navbar-collapse" + (open ? " show" : "")}>
+          <ul className="navbar-nav ms-auto">
+            {links.map(l => (
+              <li className="nav-item" key={l}>
+                <a className="nav-link" href={"#" + l.toLowerCase()} onClick={() => setOpen(false)}>{l}</a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </nav>
+  );
+}
+
+function Hero(){
+  return (
+    <section id="home" className="hero-section">
+      <div className="container">
+        <div className="row align-items-center g-5">
+          <div className="col-lg-6 order-2 order-lg-1 text-lg-start text-center">
+            <div className="hero-eyebrow mb-2">Software Engineering Student</div>
+            <div className="hero-greeting">Hello, I'm</div>
+            <h1 className="hero-name">
+              <span className="accent-underline">Khaemba Daisy</span>
+            </h1>
+            <p className="hero-headline">Ambitious Software Engineering Student &amp; Full-Stack Developer</p>
+            <p className="hero-summary mx-lg-0 mx-auto">
+              Proven leader skilled in managing high-profile tech events, including UbuCon Kenya 2026 and exclusive Google site visits. Combines strong organizational capability with technical execution across Python, React, and C++, notably demonstrated through the development of educational and booking platforms. Eager to bring robust development skills and proactive leadership to a dynamic engineering team.
+            </p>
+            <div className="d-flex flex-wrap gap-3 mt-4 justify-content-lg-start justify-content-center">
+              <a href="YOUR_RESUME_LINK.pdf" className="btn btn-primary-custom" download>
+                <i className="bi bi-download me-2"></i>Download Resume
+              </a>
+              <a href="#projects" className="btn btn-outline-custom">
+                <i className="bi bi-briefcase me-2"></i>View My Work
+              </a>
+            </div>
+          </div>
+          <div className="col-lg-6 order-1 order-lg-2">
+            <div className="profile-wrap">
+              <div className="profile-blob"></div>
+              <div className="text-center">
+                <img src="YOUR_PROFILE_PICTURE.jpg" alt="Baby - profile photo" className="profile-img" />
+                <div className="social-row">
+                  <a href="YOUR_GITHUB_LINK" className="social-icon" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                    <i className="bi bi-github"></i>
+                  </a>
+                  <a href="YOUR_LINKEDIN_LINK" className="social-icon" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                    <i className="bi bi-linkedin"></i>
+                  </a>
+                  <a href="mailto:YOUR_EMAIL_ADDRESS" className="social-icon" aria-label="Email">
+                    <i className="bi bi-envelope"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Skills(){
+  const skills = [
+    { name: "Python", icon: "bi-filetype-py" },
+    { name: "C++", icon: "bi-code-slash" },
+    { name: "React", icon: "bi-bootstrap-reboot" },
+    { name: "Next.js", icon: "bi-triangle" },
+    { name: "Bootstrap", icon: "bi-bootstrap" },
+    { name: "Tailwind CSS", icon: "bi-wind" },
+    { name: "JSON", icon: "bi-braces" },
+    { name: "Git", icon: "bi-git" },
+  ];
+  return (
+    <section id="skills">
+      <div className="container">
+        <div className="section-eyebrow">What I work with</div>
+        <h2 className="section-title">Skills</h2>
+        <div className="d-flex flex-wrap gap-3">
+          {skills.map(s => (
+            <span className="skill-pill" key={s.name}>
+              <span className="skill-dot"></span>
+              <i className={"bi " + s.icon}></i>
+              {s.name}
+            </span>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Experience(){
+  const items = [
+    {
+      role: "Deputy Head & Secretariat",
+      org: "USIU-Africa IT Club",
+      desc: "Coordinated logistics for UbuCon Kenya 2026 and managed exclusive site visits to Google Kenya and EABL. Chaired meetings and liaised between students and faculty."
+    },
+    {
+      role: "Volunteer",
+      org: "Wings of Compassion",
+      desc: "Mentored youth and provided logistical and site-transition support."
+    },
+  ];
+  return (
+    <section id="experience" className="bg-alt">
+      <div className="container">
+        <div className="section-eyebrow">Where I've been</div>
+        <h2 className="section-title">Experience</h2>
+        <div className="timeline">
+          {items.map((it, i) => (
+            <div className="timeline-item" key={i}>
+              <div className="timeline-role">{it.role}</div>
+              <div className="timeline-org">{it.org}</div>
+              <p className="timeline-desc">{it.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Projects(){
+  const projects = [
+    {
+      title: "SautiSmart",
+      desc: "A full-stack educational web and mobile platform supporting the Kenyan CBC curriculum.",
+      tech: ["React", "Node.js", "MongoDB"],
+      link: "YOUR_PROJECT_LINK_1"
+    },
+    {
+      title: "SafariiBus Express",
+      desc: "A Kenya Airways-inspired bus booking system utilizing JSON for local data storage.",
+      tech: ["Next.js", "Tailwind CSS", "JSON"],
+      link: "YOUR_PROJECT_LINK_2"
+    },
+  ];
+  return (
+    <section id="projects">
+      <div className="container">
+        <div className="section-eyebrow">What I've built</div>
+        <h2 className="section-title">Projects</h2>
+        <div className="row g-4">
+          {projects.map((p, i) => (
+            <div className="col-md-6" key={i}>
+              <div className="project-card">
+                <div className="project-title">{p.title}</div>
+                <p className="project-desc">{p.desc}</p>
+                <div className="mb-3">
+                  {p.tech.map(t => <span className="tech-tag" key={t}>{t}</span>)}
+                </div>
+                <a href={p.link} className="btn btn-outline-custom btn-sm" target="_blank" rel="noopener noreferrer">
+                  View Project <i className="bi bi-arrow-up-right ms-1"></i>
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Contact(){
+  return (
+    <section id="contact" className="bg-alt">
+      <div className="container">
+        <div className="contact-card">
+          <h2 className="mb-3">Let's build something together</h2>
+          <p className="mb-4">Open to opportunities, collaborations, and a good conversation about tech.</p>
+          <a href="mailto:YOUR_EMAIL_ADDRESS" className="btn btn-contact">
+            <i className="bi bi-envelope-fill me-2"></i>Say Hello
+          </a>
+          <div className="contact-socials">
+            <a href="YOUR_GITHUB_LINK" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+              <i className="bi bi-github"></i>
+            </a>
+            <a href="YOUR_LINKEDIN_LINK" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+              <i className="bi bi-linkedin"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Footer(){
+  return (
+    <footer>
+      <div className="container">
+        &copy; {new Date().getFullYear()} Baby. Built with React &amp; Bootstrap.
+      </div>
+    </footer>
+  );
+}
+
+function App(){
+  return (
+    <React.Fragment>
+      <Navbar />
+      <Hero />
+      <Skills />
+      <Experience />
+      <Projects />
+      <Contact />
+      <Footer />
+    </React.Fragment>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App />);
+</script>
+
+<!-- Bootstrap JS bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
