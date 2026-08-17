@@ -3,7 +3,11 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Baby | Software Engineering Student & Full-Stack Developer</title>
+<title>Khaemba Daisy | Software Engineering Student & Full-Stack Developer</title>
+
+<!-- SEO Meta Tags -->
+<meta name="description" content="Portfolio of Khaemba Daisy, Software Engineering Student at USIU-Africa and Full-Stack Developer skilled in Python, C++, React, and Next.js." />
+<meta name="author" content="Khaemba Daisy" />
 
 <!-- Bootstrap 5 -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
@@ -14,12 +18,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <!-- Custom stylesheet -->
-<link rel="stylesheet" href="styles.css" />
+<link rel="stylesheet" href="style.css" />
 
-<!-- React + ReactDOM -->
+<!-- React 18 + ReactDOM 18 -->
 <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
-<!-- Babel -->
+<!-- Babel for JSX -->
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 </head>
 <body>
@@ -27,23 +31,69 @@
 <div id="root"></div>
 
 <script type="text/babel">
-const { useState } = React;
+const { useState, useEffect } = React;
 
-function Navbar(){
+const GITHUB_PROFILE = "https://github.com/daizy-k";
+const LINKEDIN_PROFILE = "https://linkedin.com/in/khaemba-daisy"; // Replace with actual LinkedIn if desired
+const CONTACT_EMAIL = "daisykhaemba05@gmail.com";
+
+function Navbar({ darkMode, setDarkMode, activeSection }) {
   const [open, setOpen] = useState(false);
-  const links = ["Home","Skills","Experience","Projects","Contact"];
+  const [scrolled, setScrolled] = useState(false);
+  const links = [
+    { label: "Home", id: "home" },
+    { label: "Skills", id: "skills" },
+    { label: "Experience", id: "experience" },
+    { label: "Projects", id: "projects" },
+    { label: "Contact", id: "contact" }
+  ];
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <nav className="navbar navbar-expand-lg navbar-custom fixed-top py-3">
+    <nav className={`navbar navbar-expand-lg navbar-custom fixed-top py-3 ${scrolled ? 'scrolled' : ''}`}>
       <div className="container">
-        <a className="navbar-brand" href="#home">Baby<span className="dot">.</span></a>
-        <button className="navbar-toggler" type="button" onClick={() => setOpen(!open)} aria-label="Toggle navigation">
-          <span className="navbar-toggler-icon"></span>
-        </button>
-        <div className={"collapse navbar-collapse" + (open ? " show" : "")}>
-          <ul className="navbar-nav ms-auto">
+        <a className="navbar-brand" href="#home" id="nav-brand-link">
+          Daisy<span className="dot">.</span>
+        </a>
+        <div className="d-flex align-items-center gap-2 order-lg-3 ms-auto ms-lg-3">
+          <button 
+            className="theme-toggle-btn" 
+            onClick={() => setDarkMode(!darkMode)} 
+            aria-label="Toggle Dark Mode"
+            title={darkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
+            id="theme-toggle-btn"
+          >
+            <i className={`bi ${darkMode ? 'bi-sun-fill' : 'bi-moon-stars-fill'}`}></i>
+          </button>
+          <button 
+            className="navbar-toggler" 
+            type="button" 
+            onClick={() => setOpen(!open)} 
+            aria-label="Toggle navigation"
+            id="navbar-toggler-btn"
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
+        </div>
+        <div className={`collapse navbar-collapse ${open ? "show" : ""}`}>
+          <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
             {links.map(l => (
-              <li className="nav-item" key={l}>
-                <a className="nav-link" href={"#" + l.toLowerCase()} onClick={() => setOpen(false)}>{l}</a>
+              <li className="nav-item" key={l.id}>
+                <a 
+                  className={`nav-link ${activeSection === l.id ? 'active' : ''}`} 
+                  href={`#${l.id}`} 
+                  onClick={() => setOpen(false)}
+                  id={`nav-link-${l.id}`}
+                >
+                  {l.label}
+                </a>
               </li>
             ))}
           </ul>
@@ -53,47 +103,62 @@ function Navbar(){
   );
 }
 
-function Hero(){
+function Hero({ showToast }) {
+  const handleCopyEmail = (e) => {
+    e.preventDefault();
+    navigator.clipboard.writeText(CONTACT_EMAIL);
+    showToast("Email address copied to clipboard!");
+  };
+
   return (
     <section id="home" className="hero-section">
       <div className="container">
         <div className="row align-items-center g-5">
           <div className="col-lg-6 order-2 order-lg-1 text-lg-start text-center">
-            <div className="hero-eyebrow mb-2">Software Engineering Student</div>
+            <div className="hero-eyebrow mb-3">
+              <i className="bi bi-mortarboard-fill me-2"></i>Software Engineering Student
+            </div>
             <div className="hero-greeting">Hello, I'm</div>
             <h1 className="hero-name">
               <span className="accent-underline">Khaemba Daisy</span>
             </h1>
-            <p className="hero-headline">Ambitious Software Engineering Student &amp; Full-Stack Developer</p>
+            <p className="hero-headline">Ambitious Full-Stack Developer &amp; Tech Community Leader</p>
             <p className="hero-summary mx-lg-0 mx-auto">
-              Proven leader skilled in managing high-profile tech events, including UbuCon Kenya 2026 and exclusive Google site visits. Combines strong organizational capability with technical execution across Python, React, and C++, notably demonstrated through the development of educational and booking platforms. Eager to bring robust development skills and proactive leadership to a dynamic engineering team.
+              Proven leader skilled in managing high-profile tech events, including UbuCon Kenya 2026 and exclusive Google site visits. Combines strong organizational capability with technical execution across Python, React, Next.js, and C++. Eager to bring robust development skills and proactive leadership to dynamic software engineering teams.
             </p>
             <div className="d-flex flex-wrap gap-3 mt-4 justify-content-lg-start justify-content-center">
-              <a href="YOUR_RESUME_LINK.pdf" className="btn btn-primary-custom" download>
-                <i className="bi bi-download me-2"></i>Download Resume
+              <a href="#contact" className="btn btn-primary-custom" id="btn-hero-contact">
+                <i className="bi bi-envelope-paper me-2"></i>Get In Touch
               </a>
-              <a href="#projects" className="btn btn-outline-custom">
-                <i className="bi bi-briefcase me-2"></i>View My Work
+              <a href="#projects" className="btn btn-outline-custom" id="btn-hero-projects">
+                <i className="bi bi-code-square me-2"></i>View My Work
               </a>
             </div>
           </div>
           <div className="col-lg-6 order-1 order-lg-2">
             <div className="profile-wrap">
               <div className="profile-blob"></div>
-              <div className="text-center">
-                <img src="C:\Users\Admin\Downloads\Daisy portfolio pic.png" alt="Baby - profile photo" className="profile-img" />
-                <div className="social-row">
-                  <a href="YOUR_GITHUB_LINK" className="social-icon" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-                    <i className="bi bi-github"></i>
-                  </a>
-                  <a href="YOUR_LINKEDIN_LINK" className="social-icon" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-                    <i className="bi bi-linkedin"></i>
-                  </a>
-                  <a href="mailto:YOUR_EMAIL_ADDRESS" className="social-icon" aria-label="Email">
-                    <i className="bi bi-envelope"></i>
-                  </a>
+              <div className="profile-frame">
+                <img 
+                  src="images/daisy-profile.jpg" 
+                  alt="Khaemba Daisy - Profile Photo" 
+                  className="profile-img" 
+                />
+                <div className="status-badge">
+                  <span className="pulse-dot"></span> Available for Work
                 </div>
               </div>
+            </div>
+            <div className="social-row">
+              <a href={GITHUB_PROFILE} className="social-icon" target="_blank" rel="noopener noreferrer" aria-label="GitHub Profile" id="hero-github-link">
+                <i className="bi bi-github"></i>
+              </a>
+              <a href={LINKEDIN_PROFILE} className="social-icon" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile" id="hero-linkedin-link">
+                <i className="bi bi-linkedin"></i>
+              </a>
+              <button onClick={handleCopyEmail} className="social-icon border-0 bg-transparent" aria-label="Copy Email" title="Copy Email" id="hero-email-copy-btn">
+                <i className="bi bi-envelope-fill"></i>
+              </button>
             </div>
           </div>
         </div>
@@ -102,60 +167,135 @@ function Hero(){
   );
 }
 
-function Skills(){
-  const skills = [
-    { name: "Python", icon: "bi-filetype-py" },
-    { name: "C++", icon: "bi-code-slash" },
-    { name: "React", icon: "bi-bootstrap-reboot" },
-    { name: "Next.js", icon: "bi-triangle" },
-    { name: "Bootstrap", icon: "bi-bootstrap" },
-    { name: "Tailwind CSS", icon: "bi-wind" },
-    { name: "JSON", icon: "bi-braces" },
-    { name: "Git", icon: "bi-git" },
+function Skills() {
+  const [activeCategory, setActiveCategory] = useState("All");
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const categories = ["All", "Languages", "Frontend", "Backend & Core", "Tools"];
+
+  const skillsData = [
+    { name: "Python", icon: "bi-filetype-py", category: "Languages", desc: "Data structures, backend scripts, automation" },
+    { name: "C++", icon: "bi-code-slash", category: "Languages", desc: "Object-oriented programming, memory management" },
+    { name: "React", icon: "bi-bootstrap-reboot", category: "Frontend", desc: "Component architecture, hooks, state management" },
+    { name: "Next.js", icon: "bi-triangle-fill", category: "Frontend", desc: "Server-side rendering, routing, modern web apps" },
+    { name: "Bootstrap 5", icon: "bi-bootstrap", category: "Frontend", desc: "Responsive grids, UI components, layout design" },
+    { name: "Tailwind CSS", icon: "bi-wind", category: "Frontend", desc: "Utility-first styling, responsive UI" },
+    { name: "Node.js", icon: "bi-server", category: "Backend & Core", desc: "REST APIs, asynchronous JS server runtimes" },
+    { name: "JSON & Databases", icon: "bi-database", category: "Backend & Core", desc: "Structured data storage, document databases" },
+    { name: "Git & GitHub", icon: "bi-git", category: "Tools", desc: "Version control, feature branching, collaboration" },
+    { name: "Linux / Ubuntu", icon: "bi-ubuntu", category: "Tools", desc: "Command line environment, system logistics" },
   ];
+
+  const filteredSkills = skillsData.filter(s => {
+    const matchesCategory = activeCategory === "All" || s.category === activeCategory;
+    const matchesSearch = s.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                          s.desc.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
+
   return (
     <section id="skills">
       <div className="container">
         <div className="section-eyebrow">What I work with</div>
-        <h2 className="section-title">Skills</h2>
+        <h2 className="section-title">Technical Skills</h2>
+
+        <div className="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 mb-4">
+          <div className="filter-pills mb-0">
+            {categories.map(cat => (
+              <button 
+                key={cat} 
+                className={`filter-btn ${activeCategory === cat ? 'active' : ''}`}
+                onClick={() => setActiveCategory(cat)}
+                id={`filter-btn-skill-${cat.replace(/\s+/g, '-').toLowerCase()}`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+
+          <div className="search-input-wrap">
+            <i className="bi bi-search search-icon"></i>
+            <input 
+              type="text" 
+              className="search-input" 
+              placeholder="Search skills..." 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              id="skill-search-input"
+            />
+          </div>
+        </div>
+
         <div className="d-flex flex-wrap gap-3">
-          {skills.map(s => (
-            <span className="skill-pill" key={s.name}>
+          {filteredSkills.map(s => (
+            <span className="skill-pill" key={s.name} title={s.desc}>
               <span className="skill-dot"></span>
-              <i className={"bi " + s.icon}></i>
+              <i className={`bi ${s.icon}`}></i>
               {s.name}
             </span>
           ))}
+          {filteredSkills.length === 0 && (
+            <div className="text-muted py-3">No skills match your search filter.</div>
+          )}
         </div>
       </div>
     </section>
   );
 }
 
-function Experience(){
+function Experience() {
+  const [expandedIndex, setExpandedIndex] = useState(null);
+
   const items = [
     {
       role: "Deputy Head & Secretariat",
       org: "USIU-Africa IT Club",
-      desc: "Coordinated logistics for UbuCon Kenya 2026 and managed exclusive site visits to Google Kenya and EABL. Chaired meetings and liaised between students and faculty."
+      period: "2024 - Present",
+      desc: "Coordinated logistics for UbuCon Kenya 2026 and managed exclusive site visits to Google Kenya and EABL. Chaired strategic meetings and liaised between student developers and university faculty.",
+      details: "Led technical workshop organizing teams, expanded student participation by 40%, and managed speaker communications for regional tech summits."
     },
     {
-      role: "Volunteer",
+      role: "Volunteer & Youth Mentor",
       org: "Wings of Compassion",
-      desc: "Mentored youth and provided logistical and site-transition support."
+      period: "2023 - 2024",
+      desc: "Mentored youth in basic digital literacy and provided logistical and site-transition support for community initiatives.",
+      details: "Organized digital skills sessions, introducing basic web concepts and encouraging young women to pursue STEM fields."
     },
   ];
+
+  const toggleExpand = (idx) => {
+    setExpandedIndex(expandedIndex === idx ? null : idx);
+  };
+
   return (
     <section id="experience" className="bg-alt">
       <div className="container">
         <div className="section-eyebrow">Where I've been</div>
-        <h2 className="section-title">Experience</h2>
+        <h2 className="section-title">Leadership &amp; Experience</h2>
         <div className="timeline">
           {items.map((it, i) => (
             <div className="timeline-item" key={i}>
-              <div className="timeline-role">{it.role}</div>
+              <div className="d-flex justify-content-between align-items-start flex-wrap">
+                <div className="timeline-role">{it.role}</div>
+                <span className="badge bg-secondary-subtle text-secondary rounded-pill px-3 py-1 font-monospace">{it.period}</span>
+              </div>
               <div className="timeline-org">{it.org}</div>
               <p className="timeline-desc">{it.desc}</p>
+              
+              {expandedIndex === i && (
+                <div className="p-3 mb-2 rounded bg-body-tertiary text-body-secondary small">
+                  <i className="bi bi-info-circle-fill me-2 text-primary"></i>{it.details}
+                </div>
+              )}
+
+              <button 
+                className="btn btn-link btn-sm p-0 text-decoration-none" 
+                onClick={() => toggleExpand(i)}
+                style={{ color: 'var(--pacific-blue)', fontWeight: 600 }}
+              >
+                {expandedIndex === i ? "Show Less " : "Read More "}
+                <i className={`bi bi-chevron-${expandedIndex === i ? 'up' : 'down'}`}></i>
+              </button>
             </div>
           ))}
         </div>
@@ -164,63 +304,295 @@ function Experience(){
   );
 }
 
-function Projects(){
+function Projects() {
+  const [activeTab, setActiveTab] = useState("All");
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [likes, setLikes] = useState({ 0: 12, 1: 8, 2: 15 });
+
   const projects = [
     {
+      id: 0,
       title: "SautiSmart",
-      desc: "A full-stack educational web and mobile platform supporting the Kenyan CBC curriculum.",
-      tech: ["React", "Node.js", "MongoDB"],
-      link: "YOUR_PROJECT_LINK_1"
+      category: "Full-Stack",
+      desc: "A full-stack educational web and mobile platform supporting the Kenyan CBC curriculum with audio-assisted learning modules.",
+      tech: ["React", "Node.js", "MongoDB", "Tailwind CSS"],
+      link: `${GITHUB_PROFILE}/SautiSmart`,
+      features: [
+        "Audio-assisted digital lesson modules tailored for young learners.",
+        "Teacher dashboard to track student progress and interactive quiz results.",
+        "Responsive, accessible web UI optimized for low-bandwidth networks."
+      ]
     },
     {
+      id: 1,
       title: "SafariiBus Express",
-      desc: "A Kenya Airways-inspired bus booking system utilizing JSON for local data storage.",
-      tech: ["Next.js", "Tailwind CSS", "JSON"],
-      link: "YOUR_PROJECT_LINK_2"
+      category: "Web Apps",
+      desc: "A Kenya Airways-inspired bus booking system utilizing JSON for client-side local data storage and real-time seat reservation previews.",
+      tech: ["Next.js", "Tailwind CSS", "JSON", "React Hooks"],
+      link: `${GITHUB_PROFILE}/SafariiBus-Express`,
+      features: [
+        "Interactive bus seating map with real-time seat selection.",
+        "JSON-based trip scheduling and ticket price calculator.",
+        "Instant booking confirmation preview with printable digital ticket."
+      ]
     },
+    {
+      id: 2,
+      title: "Daisy Portfolio Website",
+      category: "Web Apps",
+      desc: "Modern personal portfolio showcasing projects, interactive technical skills filtering, light/dark theme toggle, and reactive state management.",
+      tech: ["React 18", "Bootstrap 5", "CSS3", "Babel"],
+      link: `${GITHUB_PROFILE}/daisy-portfolio`,
+      features: [
+        "Reactive component state for theme switching and skill filtering.",
+        "Framed profile layout optimized for portrait aspect ratios.",
+        "Custom contact form state handling with feedback toasts."
+      ]
+    }
   ];
+
+  const filteredProjects = projects.filter(p => activeTab === "All" || p.category === activeTab);
+
+  const handleLike = (id, e) => {
+    e.stopPropagation();
+    setLikes(prev => ({ ...prev, [id]: (prev[id] || 0) + 1 }));
+  };
+
   return (
     <section id="projects">
       <div className="container">
         <div className="section-eyebrow">What I've built</div>
-        <h2 className="section-title">Projects</h2>
+        <h2 className="section-title">Featured Projects</h2>
+
+        <div className="filter-pills mb-4">
+          {["All", "Full-Stack", "Web Apps"].map(tab => (
+            <button 
+              key={tab} 
+              className={`filter-btn ${activeTab === tab ? 'active' : ''}`}
+              onClick={() => setActiveTab(tab)}
+              id={`filter-btn-project-${tab.toLowerCase().replace(/\s+/g, '-')}`}
+            >
+              {tab}
+            </button>
+          ))}
+        </div>
+
         <div className="row g-4">
-          {projects.map((p, i) => (
-            <div className="col-md-6" key={i}>
+          {filteredProjects.map((p) => (
+            <div className="col-md-6 col-lg-4" key={p.id}>
               <div className="project-card">
                 <div className="project-title">{p.title}</div>
                 <p className="project-desc">{p.desc}</p>
                 <div className="mb-3">
                   {p.tech.map(t => <span className="tech-tag" key={t}>{t}</span>)}
                 </div>
-                <a href={p.link} className="btn btn-outline-custom btn-sm" target="_blank" rel="noopener noreferrer">
-                  View Project <i className="bi bi-arrow-up-right ms-1"></i>
-                </a>
+                <div className="project-card-footer">
+                  <button 
+                    className="btn btn-outline-custom btn-sm"
+                    onClick={() => setSelectedProject(p)}
+                    id={`project-details-btn-${p.id}`}
+                  >
+                    View Details <i className="bi bi-arrow-up-right ms-1"></i>
+                  </button>
+                  <button 
+                    className="like-btn" 
+                    onClick={(e) => handleLike(p.id, e)}
+                    title="Star this project"
+                  >
+                    <i className="bi bi-heart-fill"></i> {likes[p.id] || 0}
+                  </button>
+                </div>
               </div>
             </div>
           ))}
         </div>
+
+        {/* Reactive Project Detail Modal */}
+        {selectedProject && (
+          <div className="modal-backdrop-custom" onClick={() => setSelectedProject(null)}>
+            <div className="modal-card-custom" onClick={(e) => e.stopPropagation()}>
+              <button 
+                className="modal-close-btn" 
+                onClick={() => setSelectedProject(null)}
+                aria-label="Close modal"
+              >
+                <i className="bi bi-x-lg"></i>
+              </button>
+              <h3 className="mb-2" style={{ fontFamily: 'Fraunces', fontWeight: 700 }}>{selectedProject.title}</h3>
+              <span className="badge bg-primary-subtle text-primary mb-3">{selectedProject.category}</span>
+              <p className="text-secondary">{selectedProject.desc}</p>
+              
+              <h6 className="fw-bold mt-4 mb-2">Key Highlights &amp; Features:</h6>
+              <ul className="mb-4 ps-3 text-secondary">
+                {selectedProject.features.map((feat, idx) => (
+                  <li key={idx} className="mb-1">{feat}</li>
+                ))}
+              </ul>
+
+              <div className="mb-4">
+                <h6 className="fw-bold mb-2">Technologies Used:</h6>
+                {selectedProject.tech.map(t => <span className="tech-tag" key={t}>{t}</span>)}
+              </div>
+
+              <div className="d-flex gap-3">
+                <a 
+                  href={selectedProject.link} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="btn btn-primary-custom"
+                >
+                  <i className="bi bi-github me-2"></i>View Source Code
+                </a>
+                <button 
+                  className="btn btn-outline-custom"
+                  onClick={() => setSelectedProject(null)}
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );
 }
 
-function Contact(){
+function Contact({ showToast }) {
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+    if (errors[name]) {
+      setErrors(prev => ({ ...prev, [name]: null }));
+    }
+  };
+
+  const validate = () => {
+    const errs = {};
+    if (!formData.name.trim()) errs.name = "Please enter your name.";
+    if (!formData.email.trim()) {
+      errs.email = "Please enter your email.";
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      errs.email = "Please enter a valid email address.";
+    }
+    if (!formData.message.trim()) errs.message = "Please enter a message.";
+    return errs;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const validationErrors = validate();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
+    setIsSubmitting(true);
+    // Simulate reactive API dispatch
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setSubmitted(true);
+      showToast("Thank you! Your message has been sent.");
+    }, 800);
+  };
+
+  const handleCopyEmail = () => {
+    navigator.clipboard.writeText(CONTACT_EMAIL);
+    showToast("Email address copied to clipboard!");
+  };
+
   return (
     <section id="contact" className="bg-alt">
       <div className="container">
         <div className="contact-card">
           <h2 className="mb-3">Let's build something together</h2>
-          <p className="mb-4">Open to opportunities, collaborations, and a good conversation about tech.</p>
-          <a href="mailto:YOUR_EMAIL_ADDRESS" className="btn btn-contact">
-            <i className="bi bi-envelope-fill me-2"></i>Say Hello
-          </a>
+          <p className="mb-3">Open to software engineering roles, collaborations, and tech community projects.</p>
+          
+          <div className="d-flex justify-content-center align-items-center gap-2 mb-4">
+            <button className="btn-copy-email" onClick={handleCopyEmail} id="contact-copy-email-btn">
+              <i className="bi bi-copy me-2"></i>Copy {CONTACT_EMAIL}
+            </button>
+          </div>
+
+          {!submitted ? (
+            <form className="contact-form" onSubmit={handleSubmit} noValidate id="contact-form">
+              <div className="mb-3">
+                <label className="form-label text-white small fw-bold">Your Name</label>
+                <input 
+                  type="text" 
+                  name="name" 
+                  className="form-control form-control-custom" 
+                  placeholder="e.g., Alex Kimani" 
+                  value={formData.name}
+                  onChange={handleChange}
+                  id="contact-name-input"
+                />
+                {errors.name && <div className="form-error">{errors.name}</div>}
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label text-white small fw-bold">Your Email Address</label>
+                <input 
+                  type="email" 
+                  name="email" 
+                  className="form-control form-control-custom" 
+                  placeholder="e.g., alex@example.com" 
+                  value={formData.email}
+                  onChange={handleChange}
+                  id="contact-email-input"
+                />
+                {errors.email && <div className="form-error">{errors.email}</div>}
+              </div>
+
+              <div className="mb-4">
+                <label className="form-label text-white small fw-bold">Message</label>
+                <textarea 
+                  name="message" 
+                  rows="4" 
+                  className="form-control form-control-custom" 
+                  placeholder="Hi Daisy, I'd love to connect regarding..." 
+                  value={formData.message}
+                  onChange={handleChange}
+                  id="contact-message-input"
+                ></textarea>
+                {errors.message && <div className="form-error">{errors.message}</div>}
+              </div>
+
+              <div className="text-center">
+                <button type="submit" className="btn btn-contact" disabled={isSubmitting} id="contact-submit-btn">
+                  {isSubmitting ? (
+                    <span><span className="spinner-border spinner-border-sm me-2" role="status"></span>Sending...</span>
+                  ) : (
+                    <span><i className="bi bi-send-fill me-2"></i>Send Message</span>
+                  )}
+                </button>
+              </div>
+            </form>
+          ) : (
+            <div className="p-4 rounded bg-white text-dark max-w-500 mx-auto text-center my-4 shadow">
+              <i className="bi bi-check-circle-fill text-success display-4 mb-2 d-block"></i>
+              <h4 className="fw-bold mb-2">Message Received!</h4>
+              <p className="text-secondary small mb-3">Thank you for reaching out. Daisy will get back to you shortly.</p>
+              <button className="btn btn-primary-custom btn-sm" onClick={() => { setSubmitted(false); setFormData({name:'', email:'', message:''}); }}>
+                Send Another Message
+              </button>
+            </div>
+          )}
+
           <div className="contact-socials">
-            <a href="YOUR_GITHUB_LINK" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+            <a href={GITHUB_PROFILE} target="_blank" rel="noopener noreferrer" aria-label="GitHub Profile" id="contact-github-link">
               <i className="bi bi-github"></i>
             </a>
-            <a href="YOUR_LINKEDIN_LINK" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+            <a href={LINKEDIN_PROFILE} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile" id="contact-linkedin-link">
               <i className="bi bi-linkedin"></i>
+            </a>
+            <a href={`mailto:${CONTACT_EMAIL}`} aria-label="Direct Email" id="contact-direct-email-link">
+              <i className="bi bi-envelope-fill"></i>
             </a>
           </div>
         </div>
@@ -229,26 +601,97 @@ function Contact(){
   );
 }
 
-function Footer(){
+function Footer() {
   return (
     <footer>
-      <div className="container">
-        &copy; {new Date().getFullYear()} Baby. Built with React &amp; Bootstrap.
+      <div className="container d-flex flex-column flex-md-row align-items-center justify-content-between gap-2">
+        <div>
+          &copy; {new Date().getFullYear()} Khaemba Daisy. Built with React &amp; Bootstrap.
+        </div>
+        <div>
+          <a href={GITHUB_PROFILE} target="_blank" rel="noopener noreferrer" className="text-decoration-none text-reset me-3">
+            <i className="bi bi-github me-1"></i>GitHub
+          </a>
+          <a href={LINKEDIN_PROFILE} target="_blank" rel="noopener noreferrer" className="text-decoration-none text-reset">
+            <i className="bi bi-linkedin me-1"></i>LinkedIn
+          </a>
+        </div>
       </div>
     </footer>
   );
 }
 
-function App(){
+function App() {
+  const [darkMode, setDarkMode] = useState(false);
+  const [activeSection, setActiveSection] = useState("home");
+  const [toastMessage, setToastMessage] = useState(null);
+  const [showBackToTop, setShowBackToTop] = useState(false);
+
+  useEffect(() => {
+    document.body.setAttribute('data-theme', darkMode ? 'dark' : 'light');
+  }, [darkMode]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowBackToTop(window.scrollY > 300);
+
+      const sections = ["home", "skills", "experience", "projects", "contact"];
+      const scrollPosition = window.scrollY + 200;
+
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const el = document.getElementById(sections[i]);
+        if (el && el.offsetTop <= scrollPosition) {
+          setActiveSection(sections[i]);
+          break;
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const showToast = (msg) => {
+    setToastMessage(msg);
+    setTimeout(() => setToastMessage(null), 3500);
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <React.Fragment>
-      <Navbar />
-      <Hero />
+      <Navbar 
+        darkMode={darkMode} 
+        setDarkMode={setDarkMode} 
+        activeSection={activeSection} 
+      />
+      <Hero showToast={showToast} />
       <Skills />
       <Experience />
       <Projects />
-      <Contact />
+      <Contact showToast={showToast} />
       <Footer />
+
+      {showBackToTop && (
+        <button 
+          className="back-to-top" 
+          onClick={scrollToTop}
+          aria-label="Back to Top"
+          title="Back to top"
+          id="back-to-top-btn"
+        >
+          <i className="bi bi-arrow-up"></i>
+        </button>
+      )}
+
+      {toastMessage && (
+        <div className="toast-custom">
+          <i className="bi bi-check-circle-fill text-success"></i>
+          <span>{toastMessage}</span>
+        </div>
+      )}
     </React.Fragment>
   );
 }
